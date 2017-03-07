@@ -2,6 +2,7 @@ package graphql
 
 import graphql.Models._
 import sangria.schema._
+
 import scala.concurrent.ExecutionContext
 
 object SchemaDefinition {
@@ -14,21 +15,37 @@ object SchemaDefinition {
       Field("guid", StringType,
         Some(""), resolve = _.value.guid.toString),
       Field("type", StringType,
-        Some(""), resolve = _.value.pm_type.toString)
+        Some(""), resolve = _.value.pmType.toString),
+      Field("cvn" , IntType,
+        Some("The card cvn"), resolve = _.value.cvn)
     )
   )
   val AddressType = ObjectType(
     "Address", "A address object",
     fields[Address, Address] (
       Field("guid", StringType,
-        Some(""), resolve = _.value.guid.toString)
+        Some("Address guid"), resolve = _.value.guid.toString),
+      Field("line_1", StringType,
+        Some("Address linw 1"), resolve = _.value.line1.toString),
+      Field("line_2", StringType,
+        Some("Address line 2"), resolve = _.value.line2.toString),
+      Field("state", StringType,
+        Some("Address state"), resolve = _.value.state.toString),
+      Field("country", StringType,
+        Some("Address country"), resolve = _.value.country.toString)
     )
   )
   val UserType = ObjectType(
     "User", "A user object",
     fields[User, User] (
       Field("guid", StringType,
-        Some(""), resolve = _.value.guid.toString)
+        Some(""), resolve = _.value.guid.toString),
+      Field("first_name", StringType,
+        Some("first name"), resolve = _.value.firstName.toString),
+      Field("last_name", StringType,
+        Some("last name"), resolve = _.value.lastName.toString),
+      Field("email", StringType,
+        Some("email"), resolve = _.value.email.toString)
     )
   )
   val OrderType = ObjectType(
@@ -42,30 +59,30 @@ object SchemaDefinition {
     "Session", "A checkout session",
     fields[Session, Session](
       Field("guid", StringType,
-        Some(""), resolve = _.value.guid),
+        Some("The session guid"), resolve = _.value.guid),
       Field("user", UserType,
-        Some(""), resolve = _.value.user),
+        Some("The user checking out"), resolve = _.value.user),
       Field("addresses", ListType(AddressType),
-        Some(""), resolve = _.value.addresses),
+        Some("The available addresses"), resolve = _.value.addresses),
       Field("payment_methods", ListType(PaymentMethodType),
-        Some(""), resolve = _.value.paymentMethods),
+        Some("The available payment methods"), resolve = _.value.paymentMethods),
       Field("order", OrderType,
-        Some(""), resolve = _.value.order),
-      Field("address", AddressType,
-        Some(""), resolve = _.value.address),
-      Field("paymentMethod", PaymentMethodType,
-        Some(""), resolve = _.value.paymentMethod)
+        Some("The order"), resolve = _.value.order),
+      Field("selected_address", AddressType,
+        Some("The selected shipping address"), resolve = _.value.address),
+      Field("selected_payment_method", PaymentMethodType,
+        Some("The selected payment method"), resolve = _.value.paymentMethod)
     )
   )
 
-  val SessionGuid = Argument("guid", StringType, description = "")
+  val SessionGuid = Argument("guid", OptionInputType(StringType), description = "")
 
   val Query = ObjectType (
     "Query", fields[SessionRepo, Unit] (
       Field("session",
         SessionType,
         arguments = SessionGuid :: Nil,
-        resolve = ctx => ctx.ctx.sessionService.get(ctx arg SessionGuid)
+        resolve = ctx => ctx.ctx.sessionService.get(ctx.argOpt(SessionGuid.name))
       ),
       Field("payment_methods",
         ListType(PaymentMethodType),
@@ -90,7 +107,19 @@ object SchemaDefinition {
     )
   )
 
-  val CheckoutSchema = Schema(Query)
+//  case class CreateCheckoutSessionPayload(userGuid: String) extends Mutation
+//
+//
+//  val createCheckoutMutation = ObjectType("Mutation", fields[SessionRepo, Unit](
+//    Field("createSession", Query,
+//      arguments = SessionGuid :: Nil,
+//      resolve = ctx => UpdateCtx(ctx.ctx.sessionService.createSession())
+//  )))
+
+
+  //val Mutation = ObjectType("Mutation", fields[SessionRepo, Unit](createCheckoutMutation))
+
+  val CheckoutSchema = Schema(Query)//, Some(Mutation))
 }
 
 

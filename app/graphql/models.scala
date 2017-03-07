@@ -15,19 +15,26 @@ object Models {
   )
   case class PaymentMethod(
     guid: String,
-    pm_type: String,
+    pmType: String,
     firstName : String,
     lastName: String,
     cvn :Int
   )
   case class Address(
-    guid: String
+    guid: String,
+    line1 : String,
+    line2 : String,
+    state : String,
+    country : String
   )
   case class Order(
     guid: String
   )
   case class User(
-    guid: String
+    guid: String,
+    firstName : String,
+    lastName: String,
+    email: String
   )
 
   case class SessionRepo (

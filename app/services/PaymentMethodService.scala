@@ -6,14 +6,14 @@ import graphql.Models.PaymentMethod
 
 class PaymentMethodService {
 
-  val dummySingle = PaymentMethod(UUID.randomUUID().toString, "credit_card", "Tony","Stark", 123)
+  val dummySingle = PaymentMethod(UUID.randomUUID().toString, "credit_card", "Bugs","Bunny", 123)
 
   val dummyList = Seq(
     dummySingle,
-    PaymentMethod(UUID.randomUUID().toString, "visa", "Tony","Stark", 123),
-    PaymentMethod(UUID.randomUUID().toString, "mastercard", "Tony","Stark", 123),
-    PaymentMethod(UUID.randomUUID().toString, "amex", "Tony","Stark", 123),
-    PaymentMethod(UUID.randomUUID().toString, "credit_card", "Tony","Stark", 123)
+    PaymentMethod(UUID.randomUUID().toString, "visa", "Bugs","Bunny", 123),
+    PaymentMethod(UUID.randomUUID().toString, "mastercard", "Bugs","Bunny", 123),
+    PaymentMethod(UUID.randomUUID().toString, "amex", "Bugs","Bunny", 123),
+    PaymentMethod(UUID.randomUUID().toString, "credit_card", "Bugs","Bunny", 123)
   )
   def get() = {
     dummySingle
@@ -22,6 +22,6 @@ class PaymentMethodService {
     dummyList
   }
   def get(guid: String) ={
-    PaymentMethod(guid = guid, "credit_card", "Tony", "Stark", 123)
+    PaymentMethod(guid = guid, "credit_card", "Bugs", "Bunny", 123)
   }
 }

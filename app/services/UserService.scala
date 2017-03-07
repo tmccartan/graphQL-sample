@@ -6,10 +6,14 @@ import graphql.Models.User
 
 class UserService {
 
+  private def dummyUser = {
+    User(UUID.randomUUID().toString, "Bugs", "Bunny","bunny@gilt.com")
+  }
+
   def get() = {
-    User(UUID.randomUUID().toString)
+    dummyUser
   }
   def get(guid: String) ={
-    User(guid = guid)
+    dummyUser.copy(guid = guid)
   }
 }

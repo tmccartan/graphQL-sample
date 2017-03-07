@@ -21,8 +21,18 @@ class SessionService {
       orderService.get()
       )
   }
-  def get(guid: String) ={
-    Session(guid,
+  def get(guid: Option[String]) ={
+    Session(guid.getOrElse(""),
+      userService.get(),
+      paymentService.getDummyList(),
+      paymentService.get(),
+      Seq(addressService.get()),
+      addressService.get(),
+      orderService.get()
+    )
+  }
+  def createSession(): Unit = {
+    Session(UUID.randomUUID().toString,
       userService.get(),
       paymentService.getDummyList(),
       paymentService.get(),

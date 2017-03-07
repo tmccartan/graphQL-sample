@@ -9,3 +9,7 @@ A Play 2.5 REST app boilerplate with GraphQL
 
 # graphQL-sample
 A Play app using sangria as a communication protocol  
+
+
+# Sample Queries
+
